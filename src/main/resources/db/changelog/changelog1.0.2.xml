@@ -4,9 +4,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="changelog/changelog1.0.0.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/changelog1.0.1.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/changelog1.0.2.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/changelog1.0.3.xml" relativeToChangelogFile="true"/>
+    <changeSet id="add-test-user" author="a.pronichev">
+        <sql>
+            insert into users(id, name, last_name, second_name, phone, login, password, role) values(uuid_generate_v4(),
+            'test', 'test', 'test', '000', 'test', 'test', 'test');
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

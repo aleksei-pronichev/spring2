@@ -1,60 +1,53 @@
 package ru.pronichev.market.services;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.pronichev.market.dto.ProductCartDto;
+import ru.pronichev.market.entities.Cart;
 import ru.pronichev.market.entities.Product;
+import ru.pronichev.market.entities.User;
+import ru.pronichev.market.evceptions.NotFoundException;
+import ru.pronichev.market.repositories.CartRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CartService {
-    private List<Product> products;
+    private final CartRepository cartRepository;
 
-    public CartService() {
-        this.products = new ArrayList<>();
+    public void addProduct(User user, Product product) {
+        var cart = new Cart();
+        cart.setProduct(product);
+        cart.setUser(user);
+        cart.setCount(1);
+
+        cartRepository.save(cart);
     }
 
-    public void addProduct(Product product) {
-        products.add(product);
+    public void deleteProduct(User user, Product product) {
+        var cart = cartRepository.getByUserAndProduct(user, product)
+                .orElseThrow(NotFoundException::new);
+        cartRepository.delete(cart);
     }
 
-    public void addProduct(Set<Product> products) {
-        this.products.addAll(products.stream().map(
-                product -> {
-                    var newProduct = new Product();
-                    newProduct.setCount(1);
-                    newProduct.setName(product.getName());
-                    newProduct.setId(product.getId());
-                    return newProduct;
-                }
-        ).collect(Collectors.toList()));
+    public void increaseProductCount(ProductCartDto productCartDto) {
+        var cart = cartRepository.getById(productCartDto.getId());
+        cart.increment();
+        cartRepository.save(cart);
     }
 
-    public void deleteProduct(Product product) {
-        products.removeIf(p -> p.getId().equals(product.getId()));
+    public void decreaseProductCount(ProductCartDto productCartDto) {
+        var cart = cartRepository.getById(productCartDto.getId());
+        cart.decrement();
+        cartRepository.save(cart);
     }
 
-    public void increaseProductCount(Product product) {
-        for(Product innerProduct: products) {
-            if(product.getId().equals(innerProduct.getId())) {
-                innerProduct.setCount(innerProduct.getCount()+1);
-                return;
-            }
-        }
+    public List<ProductCartDto> getUserProducts(User user) {
+        return cartRepository.findAllByUser(user).stream()
+                .map(ProductCartDto::new)
+                .collect(Collectors.toList());
     }
 
-    public void decreaseProductCount(Product product) {
-        for(Product innerProduct: products) {
-            if(product.getId().equals(innerProduct.getId())) {
-                innerProduct.setCount(innerProduct.getCount()-1);
-                return;
-            }
-        }
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
 }

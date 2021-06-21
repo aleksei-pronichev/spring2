@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="init" author="v.eremin">
-        <createTable tableName="user">
+        <createTable tableName="users">
             <column name="id" type="uuid">
                 <constraints primaryKey="true"/>
             </column>
@@ -26,7 +26,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="product">
+        <createTable tableName="products">
             <column name="id" type="uuid">
                 <constraints primaryKey="true"/>
             </column>
@@ -36,26 +36,26 @@
             <column name="count" type="int" defaultValue="0"/>
         </createTable>
 
-        <createTable tableName="review">
+        <createTable tableName="reviews">
             <column name="id" type="uuid">
                 <constraints primaryKey="true"/>
             </column>
             <column name="text" type="text"/>
             <column name="product_id" type="uuid">
-                <constraints nullable="false" foreignKeyName="fk_product_id" references="product(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_products_id" references="products(id)"/>
             </column>
         </createTable>
 
-        <createTable tableName="card">
+        <createTable tableName="carts">
             <column name="id" type="uuid">
                 <constraints primaryKey="true"/>
             </column>
             <column name="product_id" type="uuid">
-                <constraints nullable="false" foreignKeyName="fk_product_id" references="product(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_products_id" references="products(id)"/>
             </column>
             <column name="count" type="int" defaultValue="0"/>
             <column name="user_id" type="uuid">
-                <constraints nullable="false" foreignKeyName="fk_user_id" references="user(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_users_id" references="users(id)"/>
             </column>
         </createTable>
     </changeSet>

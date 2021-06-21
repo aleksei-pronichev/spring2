@@ -9,8 +9,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "carts")
-public class Cart {
+@Table(name = "order_items")
+public class OrderItem {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -21,17 +21,12 @@ public class Cart {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @Column(name = "count")
     private Integer count;
 
-    public void increment() {
-        count++;
-    }
-
-    public void decrement() {
-        count--;
-    }
+    @Column(name = "price")
+    private Integer price;
 }

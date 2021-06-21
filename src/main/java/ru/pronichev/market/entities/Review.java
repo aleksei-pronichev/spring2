@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "review")
+@Table(name = "reviews")
 public class Review {
     @Id
     @GeneratedValue

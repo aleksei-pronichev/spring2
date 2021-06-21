@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="add-orders" author="a.pronichev">
+        <createTable tableName="orders">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="number" type="varchar(14)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="user_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_orders_users_id" references="users(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="order_items">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_order_items_products_id" references="products(id)"/>
+            </column>
+            <column name="order_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_order_items_orders_id" references="products(id)"/>
+            </column>
+            <column name="count" type="int" defaultValue="0"/>
+            <column name="price" type="int" defaultValue="0"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

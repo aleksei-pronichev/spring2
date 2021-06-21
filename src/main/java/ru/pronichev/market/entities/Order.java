@@ -9,29 +9,17 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "carts")
-public class Cart {
+@Table(name = "orders")
+public class Order {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-
-    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "count")
-    private Integer count;
-
-    public void increment() {
-        count++;
-    }
-
-    public void decrement() {
-        count--;
-    }
+    @Column(name = "number", nullable = false, unique = true)
+    private Integer number;
 }
