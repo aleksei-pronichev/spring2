@@ -2,6 +2,7 @@ package ru.pronichev.market.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -12,8 +13,9 @@ import java.util.UUID;
 @Table(name = "carts")
 public class Cart {
     @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
